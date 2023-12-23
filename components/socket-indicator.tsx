@@ -1,5 +1,6 @@
 "use client";
 
+import { Wifi, WifiOff } from "lucide-react";
 import { useSocket } from "./providers/socket-provider";
 import { Badge } from "./ui/badge";
 
@@ -12,23 +13,11 @@ const SocketIndicator = (props: Props) => {
 
     if (!isConnected) {
         return (
-            <Badge
-                variant="outline"
-                className="text-white bg-yellow-600 border-none"
-            >
-                Fallback : Polling Every 1s
-            </Badge>
+            <WifiOff className="w-4 h-4 text-orange-600 border-none" />
         );
     }
 
-    return (
-        <Badge
-            variant="outline"
-            className="text-white border-none bg-emerald-600"
-        >
-            Live : Realtime
-        </Badge>
-    );
+    return <Wifi className="w-4 h-4 text-green-600 border-none" />;
 };
 
 export default SocketIndicator;
