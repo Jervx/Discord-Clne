@@ -4,12 +4,15 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormControl } from "../ui/form";
-import { Plus, Smile } from "lucide-react";
+import { Plus, SendHorizonal } from "lucide-react";
 import { Input } from "../ui/input";
 
 import qs from "query-string";
 import axios from "axios";
 import { useModal } from "@/hooks/use-modal-store";
+import EmojiPicker from "../emoji-picker";
+import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 interface ChatInputProps {
     apiUrl: string;
@@ -23,6 +26,7 @@ const formSchema = z.object({
 });
 
 const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
+    const router = useRouter();
     const { onOpen } = useModal();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +45,8 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                 query,
             });
             await axios.post(url, values);
+            form.reset();
+            router.refresh();
         } catch (e) {
             console.log(e);
         }
@@ -78,8 +84,17 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                                                 : "#" + name
                                         }`}
                                     />
-                                    <div className="absolute top-7 right-8 ">
-                                        <Smile className="" />
+                                    <div className="absolute top-7 right-8 flex gap-x-2 justify-end items-center">
+                                        <Button disabled={field.value.length === 0} type="button" variant={"ghost"} className="p-0 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 h-fit bg-transparent hover:bg-transparent" size={"sm"}>
+                                            <SendHorizonal />
+                                        </Button>
+                                        <EmojiPicker
+                                            onChange={(emoji: string) =>
+                                                field.onChange(
+                                                    `${field.value}${emoji}`
+                                                )
+                                            }
+                                        />
                                     </div>
                                 </div>
                             </FormControl>
