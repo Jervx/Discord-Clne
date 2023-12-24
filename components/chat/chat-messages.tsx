@@ -6,6 +6,7 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
 import { format } from "date-fns";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 interface ChatMessagesProps {
     name: string;
@@ -39,6 +40,8 @@ const ChatMessages = ({
     type,
 }: ChatMessagesProps) => {
     const queryKey = `chat:${chatId}`;
+    const addKey = `chat:${chatId}:messages`;
+    const updateKey = `chat:${chatId}:messages:update`;
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
         useChatQuery({
@@ -47,6 +50,8 @@ const ChatMessages = ({
             paramKey,
             paramValue,
         });
+
+    useChatSocket({ queryKey, addKey, updateKey});
 
     if (status === "loading")
         return (
@@ -80,7 +85,7 @@ const ChatMessages = ({
                                 <ChatItem
                                     key={message.id}
                                     id={message.id}
-                                    currentMember={message.member}
+                                    currentMember={member}
                                     member={message.member}
                                     content={message.content}
                                     fileUrl={message.fileUrl}
