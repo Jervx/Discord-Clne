@@ -68,7 +68,7 @@ export const GET = async (req: Request) => {
 
         return NextResponse.json({
             items: messages,
-            cursor: nextCursor,
+            nextCursor: nextCursor,
         });
     } catch (e) {
         console.error("[MESSAGES_GET]", e);
