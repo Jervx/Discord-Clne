@@ -4,6 +4,8 @@ import React, { Fragment } from "react";
 import ChatWelcome from "./chat-welcome";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
+import ChatItem from "./chat-item";
+import { format } from "date-fns";
 
 interface ChatMessagesProps {
     name: string;
@@ -22,6 +24,8 @@ type MessageWithMemberWithProfile = Message & {
         profile: Profile;
     };
 };
+
+const DATE_FORMAT = "d MMMM yyyy, HH:mm";
 
 const ChatMessages = ({
     name,
@@ -73,7 +77,24 @@ const ChatMessages = ({
                     <Fragment key={i}>
                         {group.items.map(
                             (message: MessageWithMemberWithProfile) => (
-                                <div key={message.id}>{message.content}</div>
+                                <ChatItem
+                                    key={message.id}
+                                    id={message.id}
+                                    currentMember={message.member}
+                                    member={message.member}
+                                    content={message.content}
+                                    fileUrl={message.fileUrl}
+                                    deleted={message.deleted}
+                                    timeStamp={format(
+                                        new Date(message.createdAt),
+                                        DATE_FORMAT
+                                    )}
+                                    isUpdated={
+                                        message.updatedAt !== message.createdAt
+                                    }
+                                    socketUrl={socketUrl}
+                                    socketQuery={socketQuery}
+                                />
                             )
                         )}
                     </Fragment>
