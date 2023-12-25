@@ -3,7 +3,7 @@ import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Smile } from "lucide-react";
 import { useTheme } from "next-themes";
-import EmojiPick, { Theme } from 'emoji-picker-react';
+import EmojiPick, { Theme } from "emoji-picker-react";
 
 // EmojiMart doesn't work after building
 // import Picker from "@emoji-mart/react";
@@ -31,7 +31,14 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                     data={data}
                     onEmojiSelect={(emoji: any) => onChange(emoji.native)}
                 /> */}
-                <EmojiPick theme={resolvedTheme as Theme} onEmojiClick={({emoji})=> onChange(emoji)}/>
+                <EmojiPick
+                    theme={
+                        !resolvedTheme || resolvedTheme === "system"
+                            ? Theme.AUTO
+                            : (resolvedTheme as Theme)
+                    }
+                    onEmojiClick={({ emoji }) => onChange(emoji)}
+                />
             </PopoverContent>
         </Popover>
     );
