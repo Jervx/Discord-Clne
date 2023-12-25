@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormControl } from "../ui/form";
-import { Plus, SendHorizonal } from "lucide-react";
+import { Loader2, Plus, SendHorizonal } from "lucide-react";
 import { Input } from "../ui/input";
 
 import qs from "query-string";
@@ -77,6 +77,7 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                                     <Input
                                         {...field}
                                         disabled={isLoading}
+                                        autoComplete="off"
                                         className="py-6 border-0 border-none px-14 bg-zinc-200/90 dark:bg-zinc-700/75 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                                         placeholder={`Message ${
                                             type === "conversation"
@@ -84,9 +85,9 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                                                 : "#" + name
                                         }`}
                                     />
-                                    <div className="absolute top-7 right-8 flex gap-x-2 justify-end items-center">
-                                        <Button disabled={field.value.length === 0} type="button" variant={"ghost"} className="p-0 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 h-fit bg-transparent hover:bg-transparent" size={"sm"}>
-                                            <SendHorizonal />
+                                    <div className="absolute flex items-center justify-end top-7 right-8 gap-x-2">
+                                        <Button disabled={field.value.length === 0 || isLoading} type="submit" variant={"ghost"} className="p-0 bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 h-fit hover:bg-transparent" size={"sm"}>
+                                            { isLoading ? <Loader2 strokeWidth={1} className="animate-spin"/> : <SendHorizonal /> }
                                         </Button>
                                         <EmojiPicker
                                             onChange={(emoji: string) =>
