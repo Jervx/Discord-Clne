@@ -16,6 +16,8 @@ interface EmojiPickerProps {
 const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
     const { resolvedTheme } = useTheme();
 
+    console.log(resolvedTheme)
+
     return (
         <Popover>
             <PopoverTrigger>
@@ -32,11 +34,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                     onEmojiSelect={(emoji: any) => onChange(emoji.native)}
                 /> */}
                 <EmojiPick
-                    theme={
-                        !resolvedTheme || resolvedTheme === "system"
-                            ? Theme.AUTO
-                            : (resolvedTheme as Theme)
-                    }
+                    theme={resolvedTheme as Theme}
                     onEmojiClick={({ emoji }) => onChange(emoji)}
                 />
             </PopoverContent>
